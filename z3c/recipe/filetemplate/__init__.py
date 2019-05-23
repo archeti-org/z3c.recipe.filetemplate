@@ -24,6 +24,11 @@ import zc.recipe.egg
 import zc.buildout
 import zc.buildout.easy_install
 
+try:
+    from os.path import walk
+except Exception:
+    from os import walk
+
 ABS_PATH_ERROR = ('%s is an absolute path. Paths must be '
                   'relative to the buildout directory.')
 
@@ -142,8 +147,7 @@ class FileTemplate(object):
                         found.update(matching)
                 for name in found:
                     self.actions.append(file_info[name])
-            os.path.walk(
-                self.source_dir, visit, None)
+            walk(self.source_dir, visit, None)
         else:
             for val in source_patterns:
                 source = zc.buildout.easy_install.realpath(
